@@ -23,13 +23,14 @@ class TransactionModelAdapter extends TypeAdapter<TransactionModel> {
       type: fields[3] as TransactionType,
       date: fields[4] as DateTime,
       category: fields[5] as String,
+      currency: fields[6] as CurrencyType,
     );
   }
 
   @override
   void write(BinaryWriter writer, TransactionModel obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -41,7 +42,9 @@ class TransactionModelAdapter extends TypeAdapter<TransactionModel> {
       ..writeByte(4)
       ..write(obj.date)
       ..writeByte(5)
-      ..write(obj.category);
+      ..write(obj.category)
+      ..writeByte(6)
+      ..write(obj.currency);
   }
 
   @override
@@ -90,6 +93,50 @@ class TransactionTypeAdapter extends TypeAdapter<TransactionType> {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is TransactionTypeAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+class CurrencyTypeAdapter extends TypeAdapter<CurrencyType> {
+  @override
+  final int typeId = 2;
+
+  @override
+  CurrencyType read(BinaryReader reader) {
+    switch (reader.readByte()) {
+      case 0:
+        return CurrencyType.syp;
+      case 1:
+        return CurrencyType.usd;
+      case 2:
+        return CurrencyType.gold;
+      default:
+        return CurrencyType.syp;
+    }
+  }
+
+  @override
+  void write(BinaryWriter writer, CurrencyType obj) {
+    switch (obj) {
+      case CurrencyType.syp:
+        writer.writeByte(0);
+        break;
+      case CurrencyType.usd:
+        writer.writeByte(1);
+        break;
+      case CurrencyType.gold:
+        writer.writeByte(2);
+        break;
+    }
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is CurrencyTypeAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

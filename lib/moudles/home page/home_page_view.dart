@@ -3,8 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:masrofe/data/transaction_repository.dart';
 import 'package:masrofe/moudles/home page/cubit/home_page_cubit.dart';
 import 'package:masrofe/moudles/home page/widgets/add_transaction_sheet.dart';
-import 'package:masrofe/moudles/home page/widgets/balance_card.dart';
-import 'package:masrofe/moudles/home page/widgets/summary_row.dart';
+import 'package:masrofe/moudles/home page/widgets/currency_section.dart';
 import 'package:masrofe/moudles/home page/widgets/transaction_tile.dart';
 
 class HomePageView extends StatelessWidget {
@@ -58,7 +57,9 @@ class _HomePageContent extends StatelessWidget {
       actions: [
         IconButton(
           icon: const Icon(Icons.notifications_outlined, color: Colors.white),
-          onPressed: () {},
+          onPressed: () async {
+            await TransactionRepository().clearAll();
+          },
         ),
       ],
     );
@@ -68,12 +69,7 @@ class _HomePageContent extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.all(20),
       children: [
-        BalanceCard(balance: state.balance),
-        const SizedBox(height: 20),
-        SummaryRow(
-          totalIncome: state.totalIncome,
-          totalExpenses: state.totalExpenses,
-        ),
+        CurrencySection(currencies: state.currencies),
         const SizedBox(height: 28),
         const Text(
           'آخر المعاملات',

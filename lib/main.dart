@@ -12,6 +12,7 @@ void main() async {
   final appDocDir = await getApplicationDocumentsDirectory();
   await Hive.initFlutter(appDocDir.path);
   Hive.registerAdapter(TransactionTypeAdapter());
+  Hive.registerAdapter(CurrencyTypeAdapter());
   Hive.registerAdapter(TransactionModelAdapter());
   runApp(const MasrofeApp());
 }
@@ -22,6 +23,7 @@ class MasrofeApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       locale: const Locale('ar'),
       supportedLocales: const [Locale('ar'), Locale('en')],
       localizationsDelegates: const [

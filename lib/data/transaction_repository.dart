@@ -8,7 +8,12 @@ class TransactionRepository {
     if (Hive.isBoxOpen(_boxName)) {
       return Hive.box<TransactionModel>(_boxName);
     }
-    return await Hive.openBox<TransactionModel>(_boxName);
+    try {
+      return await Hive.openBox<TransactionModel>(_boxName);
+    } catch (_) {
+      await Hive.deleteBoxFromDisk(_boxName);
+      return await Hive.openBox<TransactionModel>(_boxName);
+    }
   }
 
   Future<List<TransactionModel>> getAll() async {

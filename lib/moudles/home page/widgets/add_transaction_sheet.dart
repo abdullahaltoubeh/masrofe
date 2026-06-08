@@ -17,6 +17,7 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
   final _amountController = TextEditingController();
 
   TransactionType _selectedType = TransactionType.expense;
+  CurrencyType _selectedCurrency = CurrencyType.syp;
   String _selectedCategory = 'Food';
 
   static const _categories = [
@@ -58,6 +59,7 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
       type: _selectedType,
       date: DateTime.now(),
       category: _selectedCategory,
+      currency: _selectedCurrency,
     );
 
     context.read<HomePageCubit>().addTransaction(transaction);
@@ -88,6 +90,8 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
             _buildCategoryDropdown(),
             const SizedBox(height: 14),
             _buildTypeSelector(),
+            const SizedBox(height: 14),
+            _buildCurrencySelector(),
             const SizedBox(height: 24),
             _buildSubmitButton(),
           ],
@@ -157,6 +161,34 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
           onTap: () => setState(() => _selectedType = TransactionType.income),
         ),
       ],
+    );
+  }
+
+  Widget _buildCurrencySelector() {
+    const labels = {
+      CurrencyType.syp: 'ل.س',
+      CurrencyType.usd: 'دولار',
+      CurrencyType.gold: 'ذهب',
+    };
+    const colors = {
+      CurrencyType.syp: Color(0xFF6C63FF),
+      CurrencyType.usd: Color(0xFF27AE60),
+      CurrencyType.gold: Color(0xFFF39C12),
+    };
+    return Row(
+      children: CurrencyType.values.map((c) {
+        final isSelected = _selectedCurrency == c;
+        final color = colors[c]!;
+        return Padding(
+          padding: const EdgeInsets.only(left: 8),
+          child: TypeChip(
+            label: labels[c]!,
+            color: color,
+            selected: isSelected,
+            onTap: () => setState(() => _selectedCurrency = c),
+          ),
+        );
+      }).toList(),
     );
   }
 

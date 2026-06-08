@@ -10,6 +10,16 @@ enum TransactionType {
   expense,
 }
 
+@HiveType(typeId: 2)
+enum CurrencyType {
+  @HiveField(0)
+  syp,
+  @HiveField(1)
+  usd,
+  @HiveField(2)
+  gold,
+}
+
 @HiveType(typeId: 1)
 class TransactionModel extends HiveObject {
   @HiveField(0)
@@ -30,6 +40,9 @@ class TransactionModel extends HiveObject {
   @HiveField(5)
   final String category;
 
+  @HiveField(6)
+  final CurrencyType currency;
+
   TransactionModel({
     required this.id,
     required this.title,
@@ -37,5 +50,6 @@ class TransactionModel extends HiveObject {
     required this.type,
     required this.date,
     required this.category,
+    this.currency = CurrencyType.syp,
   });
 }

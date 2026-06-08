@@ -14,18 +14,24 @@ class HomePageCubit extends Cubit<HomePageState> {
   Future<void> loadData() async {
     final transactions = await _repository.getAll();
 
-    final totalIncome = transactions
-        .where((t) => t.type == TransactionType.income)
-        .fold(0.0, (sum, t) => sum + t.amount);
-
-    final totalExpenses = transactions
-        .where((t) => t.type == TransactionType.expense)
-        .fold(0.0, (sum, t) => sum + t.amount);
+    final currencies = CurrencyType.values.map((currency) {
+      final filtered = transactions.where((t) => t.currency == currency);
+      final income = filtered
+          .where((t) => t.type == TransactionType.income)
+          .fold(0.0, (sum, t) => sum + t.amount);
+      final expenses = filtered
+          .where((t) => t.type == TransactionType.expense)
+          .fold(0.0, (sum, t) => sum + t.amount);
+      return CurrencySummary(
+        currency: currency,
+        balance: income - expenses,
+        totalIncome: income,
+        totalExpenses: expenses,
+      );
+    }).toList();
 
     emit(HomePageLoaded(
-      balance: totalIncome - totalExpenses,
-      totalIncome: totalIncome,
-      totalExpenses: totalExpenses,
+      currencies: currencies,
       recentTransactions: transactions,
     ));
   }
