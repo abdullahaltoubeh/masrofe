@@ -17,7 +17,7 @@ class SummaryRow extends StatelessWidget {
       children: [
         Expanded(
           child: SummaryCard(
-            label: 'Income',
+            label: 'الدخل',
             amount: totalIncome,
             icon: Icons.arrow_downward_rounded,
             color: const Color(0xFF2ECC71),
@@ -26,7 +26,7 @@ class SummaryRow extends StatelessWidget {
         const SizedBox(width: 16),
         Expanded(
           child: SummaryCard(
-            label: 'Expenses',
+            label: 'المصروفات',
             amount: totalExpenses,
             icon: Icons.arrow_upward_rounded,
             color: const Color(0xFFE74C3C),

@@ -48,7 +48,7 @@ class _HomePageContent extends StatelessWidget {
       backgroundColor: const Color(0xFF6C63FF),
       elevation: 0,
       title: const Text(
-        'Masrofe',
+        'مصروفي',
         style: TextStyle(
           color: Colors.white,
           fontWeight: FontWeight.bold,
@@ -76,7 +76,7 @@ class _HomePageContent extends StatelessWidget {
         ),
         const SizedBox(height: 28),
         const Text(
-          'Recent Transactions',
+          'آخر المعاملات',
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,

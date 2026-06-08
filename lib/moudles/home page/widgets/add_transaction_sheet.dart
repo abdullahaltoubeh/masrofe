@@ -29,6 +29,18 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
     'Other',
   ];
 
+  static const _categoryLabels = {
+    'Food': 'طعام',
+    'Work': 'عمل',
+    'Entertainment': 'ترفيه',
+    'Utilities': 'مرافق',
+    'Transport': 'مواصلات',
+    'Health': 'صحة',
+    'Other': 'أخرى',
+  };
+
+  String _arabicCategory(String key) => _categoryLabels[key] ?? key;
+
   @override
   void dispose() {
     _titleController.dispose();
@@ -86,7 +98,7 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
 
   Widget _buildTitle() {
     return const Text(
-      'Add Transaction',
+      'إضافة معاملة',
       style: TextStyle(
         fontSize: 20,
         fontWeight: FontWeight.bold,
@@ -98,9 +110,9 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
   Widget _buildTitleField() {
     return TextFormField(
       controller: _titleController,
-      decoration: _inputDecoration('Title'),
+      decoration: _inputDecoration('العنوان'),
       validator: (v) =>
-          (v == null || v.trim().isEmpty) ? 'Enter a title' : null,
+          (v == null || v.trim().isEmpty) ? 'أدخل عنواناً' : null,
     );
   }
 
@@ -108,10 +120,10 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
     return TextFormField(
       controller: _amountController,
       keyboardType: const TextInputType.numberWithOptions(decimal: true),
-      decoration: _inputDecoration('Amount'),
+      decoration: _inputDecoration('المبلغ'),
       validator: (v) {
-        if (v == null || v.trim().isEmpty) return 'Enter an amount';
-        if (double.tryParse(v.trim()) == null) return 'Invalid number';
+        if (v == null || v.trim().isEmpty) return 'أدخل مبلغاً';
+        if (double.tryParse(v.trim()) == null) return 'رقم غير صحيح';
         return null;
       },
     );
@@ -120,9 +132,9 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
   Widget _buildCategoryDropdown() {
     return DropdownButtonFormField<String>(
       value: _selectedCategory,
-      decoration: _inputDecoration('Category'),
+      decoration: _inputDecoration('الفئة'),
       items: _categories
-          .map((c) => DropdownMenuItem(value: c, child: Text(c)))
+          .map((c) => DropdownMenuItem(value: c, child: Text(_arabicCategory(c))))
           .toList(),
       onChanged: (v) => setState(() => _selectedCategory = v!),
     );
@@ -132,14 +144,14 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
     return Row(
       children: [
         TypeChip(
-          label: 'Expense',
+          label: 'مصروف',
           color: const Color(0xFFE74C3C),
           selected: _selectedType == TransactionType.expense,
           onTap: () => setState(() => _selectedType = TransactionType.expense),
         ),
         const SizedBox(width: 12),
         TypeChip(
-          label: 'Income',
+          label: 'دخل',
           color: const Color(0xFF2ECC71),
           selected: _selectedType == TransactionType.income,
           onTap: () => setState(() => _selectedType = TransactionType.income),
@@ -161,7 +173,7 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
         ),
         onPressed: _submit,
         child: const Text(
-          'Add',
+          'إضافة',
           style: TextStyle(
             color: Colors.white,
             fontSize: 16,

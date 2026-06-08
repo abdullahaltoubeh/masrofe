@@ -29,7 +29,7 @@ class BalanceCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            'Current Balance',
+            'الرصيد الحالي',
             style: TextStyle(color: Colors.white70, fontSize: 14),
           ),
           const SizedBox(height: 8),
@@ -44,7 +44,7 @@ class BalanceCard extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           const Text(
-            'This Month',
+            'هذا الشهر',
             style: TextStyle(color: Colors.white60, fontSize: 13),
           ),
         ],

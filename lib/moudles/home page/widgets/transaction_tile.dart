@@ -70,7 +70,7 @@ class TransactionTile extends StatelessWidget {
                 ),
                 const SizedBox(height: 3),
                 Text(
-                  DateFormat('MMM d, yyyy').format(transaction.date),
+                  DateFormat('d MMM yyyy', 'ar').format(transaction.date),
                   style: const TextStyle(color: Colors.grey, fontSize: 12),
                 ),
               ],
