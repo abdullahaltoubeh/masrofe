@@ -1,37 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:masrofe/models/transaction_model.dart';
+import 'package:masrofe/moudles/home page/cubit/home_page_cubit.dart';
+import 'package:masrofe/moudles/transaction detail/transaction_detail_page.dart';
 
 class TransactionTile extends StatelessWidget {
   final TransactionModel transaction;
 
   const TransactionTile({super.key, required this.transaction});
 
-  IconData _categoryIcon(String category) {
-    switch (category) {
-      case 'Food':
-        return Icons.restaurant_outlined;
-      case 'Work':
-        return Icons.work_outline;
-      case 'Entertainment':
-        return Icons.movie_outlined;
-      case 'Utilities':
-        return Icons.bolt_outlined;
-      case 'Transport':
-        return Icons.directions_car_outlined;
-      case 'Health':
-        return Icons.fitness_center_outlined;
-      default:
-        return Icons.attach_money;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final isIncome = transaction.type == TransactionType.income;
     final color = isIncome ? const Color(0xFF2ECC71) : const Color(0xFFE74C3C);
+    final icon = isIncome ? Icons.arrow_downward_rounded : Icons.arrow_upward_rounded;
 
-    return Container(
+    return GestureDetector(
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => BlocProvider.value(
+            value: context.read<HomePageCubit>(),
+            child: TransactionDetailPage(transaction: transaction),
+          ),
+        ),
+      ),
+      child: Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       decoration: BoxDecoration(
@@ -53,7 +48,7 @@ class TransactionTile extends StatelessWidget {
               color: color.withOpacity(0.12),
               shape: BoxShape.circle,
             ),
-            child: Icon(_categoryIcon(transaction.category), color: color, size: 22),
+            child: Icon(icon, color: color, size: 22),
           ),
           const SizedBox(width: 14),
           Expanded(
@@ -70,8 +65,12 @@ class TransactionTile extends StatelessWidget {
                 ),
                 const SizedBox(height: 3),
                 Text(
-                  DateFormat('d MMM yyyy', 'ar').format(transaction.date),
+                  transaction.description.isNotEmpty
+                      ? transaction.description
+                      : DateFormat('d MMM yyyy', 'ar').format(transaction.date),
                   style: const TextStyle(color: Colors.grey, fontSize: 12),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),
@@ -86,6 +85,7 @@ class TransactionTile extends StatelessWidget {
           ),
         ],
       ),
+    ),
     );
   }
 }

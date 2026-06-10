@@ -38,7 +38,7 @@ class TransactionModel extends HiveObject {
   final DateTime date;
 
   @HiveField(5)
-  final String category;
+  final String description;
 
   @HiveField(6)
   final CurrencyType currency;
@@ -49,7 +49,7 @@ class TransactionModel extends HiveObject {
     required this.amount,
     required this.type,
     required this.date,
-    required this.category,
+    required this.description,
     this.currency = CurrencyType.syp,
   });
 }

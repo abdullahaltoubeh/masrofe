@@ -15,37 +15,16 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
   final _amountController = TextEditingController();
+  final _descriptionController = TextEditingController();
 
   TransactionType _selectedType = TransactionType.expense;
   CurrencyType _selectedCurrency = CurrencyType.syp;
-  String _selectedCategory = 'Food';
-
-  static const _categories = [
-    'Food',
-    'Work',
-    'Entertainment',
-    'Utilities',
-    'Transport',
-    'Health',
-    'Other',
-  ];
-
-  static const _categoryLabels = {
-    'Food': 'طعام',
-    'Work': 'عمل',
-    'Entertainment': 'ترفيه',
-    'Utilities': 'مرافق',
-    'Transport': 'مواصلات',
-    'Health': 'صحة',
-    'Other': 'أخرى',
-  };
-
-  String _arabicCategory(String key) => _categoryLabels[key] ?? key;
 
   @override
   void dispose() {
     _titleController.dispose();
     _amountController.dispose();
+    _descriptionController.dispose();
     super.dispose();
   }
 
@@ -58,7 +37,7 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
       amount: double.parse(_amountController.text.trim()),
       type: _selectedType,
       date: DateTime.now(),
-      category: _selectedCategory,
+      description: _descriptionController.text.trim(),
       currency: _selectedCurrency,
     );
 
@@ -87,7 +66,7 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
             const SizedBox(height: 14),
             _buildAmountField(),
             const SizedBox(height: 14),
-            _buildCategoryDropdown(),
+            _buildDescriptionField(),
             const SizedBox(height: 14),
             _buildTypeSelector(),
             const SizedBox(height: 14),
@@ -133,14 +112,11 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
     );
   }
 
-  Widget _buildCategoryDropdown() {
-    return DropdownButtonFormField<String>(
-      value: _selectedCategory,
-      decoration: _inputDecoration('الفئة'),
-      items: _categories
-          .map((c) => DropdownMenuItem(value: c, child: Text(_arabicCategory(c))))
-          .toList(),
-      onChanged: (v) => setState(() => _selectedCategory = v!),
+  Widget _buildDescriptionField() {
+    return TextFormField(
+      controller: _descriptionController,
+      decoration: _inputDecoration('الوصف (اختياري)'),
+      maxLines: 2,
     );
   }
 
