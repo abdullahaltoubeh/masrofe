@@ -13,8 +13,8 @@ class TransactionTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isIncome = transaction.type == TransactionType.income;
-    final color = isIncome ? const Color(0xFF2ECC71) : const Color(0xFFE74C3C);
-    final icon = isIncome ? Icons.arrow_downward_rounded : Icons.arrow_upward_rounded;
+    final color = isIncome ? const Color(0xFF00C897) : const Color(0xFFFF5C6C);
+    final icon = isIncome ? Icons.south_west_rounded : Icons.north_east_rounded;
 
     return GestureDetector(
       onTap: () => Navigator.push(
@@ -31,12 +31,12 @@ class TransactionTile extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(18),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 8,
-            offset: const Offset(0, 3),
+            color: color.withValues(alpha: 0.08),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
@@ -45,10 +45,10 @@ class TransactionTile extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: color.withOpacity(0.12),
-              shape: BoxShape.circle,
+              color: color.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(14),
             ),
-            child: Icon(icon, color: color, size: 22),
+            child: Icon(icon, color: color, size: 20),
           ),
           const SizedBox(width: 14),
           Expanded(
@@ -58,29 +58,34 @@ class TransactionTile extends StatelessWidget {
                 Text(
                   transaction.title,
                   style: const TextStyle(
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.w700,
                     fontSize: 15,
                     color: Color(0xFF2D3142),
                   ),
                 ),
-                const SizedBox(height: 3),
+                const SizedBox(height: 4),
                 Text(
-                  transaction.description.isNotEmpty
-                      ? transaction.description
-                      : DateFormat('d MMM yyyy', 'ar').format(transaction.date),
-                  style: const TextStyle(color: Colors.grey, fontSize: 12),
+                  DateFormat('d MMM yyyy', 'ar').format(transaction.date),
+                  style: const TextStyle(color: Color(0xFFAAAAAA), fontSize: 12),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),
           ),
-          Text(
-            '${isIncome ? '+' : '-'}\$${transaction.amount.toStringAsFixed(2)}',
-            style: TextStyle(
-              color: color,
-              fontWeight: FontWeight.bold,
-              fontSize: 15,
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            decoration: BoxDecoration(
+              color: color.withValues(alpha: 0.08),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Text(
+              '${isIncome ? '+' : '-'}${NumberFormat('#,##0.##').format(transaction.amount)}',
+              style: TextStyle(
+                color: color,
+                fontWeight: FontWeight.bold,
+                fontSize: 14,
+              ),
             ),
           ),
         ],

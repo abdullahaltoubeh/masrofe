@@ -47,45 +47,92 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(
-        left: 20,
-        right: 20,
-        top: 24,
-        bottom: MediaQuery.of(context).viewInsets.bottom + 24,
-      ),
-      child: Form(
-        key: _formKey,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildTitle(),
-            const SizedBox(height: 20),
-            _buildTitleField(),
-            const SizedBox(height: 14),
-            _buildAmountField(),
-            const SizedBox(height: 14),
-            _buildDescriptionField(),
-            const SizedBox(height: 14),
-            _buildTypeSelector(),
-            const SizedBox(height: 14),
-            _buildCurrencySelector(),
-            const SizedBox(height: 24),
-            _buildSubmitButton(),
-          ],
-        ),
+    return SizedBox(
+      height: MediaQuery.of(context).size.height,
+      child: Column(
+        children: [
+          _buildSheetHeader(context),
+          Expanded(
+            child: SingleChildScrollView(
+              padding: EdgeInsets.only(
+                left: 20,
+                right: 20,
+                top: 8,
+                bottom: MediaQuery.of(context).viewInsets.bottom + 24,
+              ),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildTitleField(),
+                    const SizedBox(height: 14),
+                    _buildAmountField(),
+                    const SizedBox(height: 14),
+                    _buildDescriptionField(),
+                    const SizedBox(height: 20),
+                    _buildSectionLabel('نوع المعاملة'),
+                    const SizedBox(height: 10),
+                    _buildTypeSelector(),
+                    const SizedBox(height: 20),
+                    _buildSectionLabel('العملة'),
+                    const SizedBox(height: 10),
+                    _buildCurrencySelector(),
+                    const SizedBox(height: 32),
+                    _buildSubmitButton(),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
 
-  Widget _buildTitle() {
-    return const Text(
-      'إضافة معاملة',
-      style: TextStyle(
-        fontSize: 20,
-        fontWeight: FontWeight.bold,
-        color: Color(0xFF2D3142),
+  Widget _buildSheetHeader(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(20, 16, 8, 16),
+      decoration: const BoxDecoration(
+        color: Color(0xFF6C63FF),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      child: Row(
+        children: [
+          const Expanded(
+            child: Text(
+              'إضافة معاملة',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+          ),
+          GestureDetector(
+            onTap: () => Navigator.pop(context),
+            child: Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: 0.2),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(Icons.close, color: Colors.white, size: 18),
+            ),
+          ),
+          const SizedBox(width: 8),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSectionLabel(String label) {
+    return Text(
+      label,
+      style: const TextStyle(
+        fontSize: 14,
+        fontWeight: FontWeight.w600,
+        color: Color(0xFF9E9E9E),
       ),
     );
   }
@@ -125,14 +172,14 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
       children: [
         TypeChip(
           label: 'مصروف',
-          color: const Color(0xFFE74C3C),
+          color: const Color(0xFFFF5C6C),
           selected: _selectedType == TransactionType.expense,
           onTap: () => setState(() => _selectedType = TransactionType.expense),
         ),
         const SizedBox(width: 12),
         TypeChip(
           label: 'دخل',
-          color: const Color(0xFF2ECC71),
+          color: const Color(0xFF00C897),
           selected: _selectedType == TransactionType.income,
           onTap: () => setState(() => _selectedType = TransactionType.income),
         ),
@@ -148,7 +195,7 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
     };
     const colors = {
       CurrencyType.syp: Color(0xFF6C63FF),
-      CurrencyType.usd: Color(0xFF27AE60),
+      CurrencyType.usd: Color(0xFF00C897),
       CurrencyType.gold: Color(0xFFF39C12),
     };
     return Row(

@@ -22,7 +22,7 @@ class TypeChip extends StatelessWidget {
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         decoration: BoxDecoration(
-          color: selected ? color : color.withOpacity(0.1),
+          color: selected ? color : color.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(10),
           border: Border.all(color: color),
         ),

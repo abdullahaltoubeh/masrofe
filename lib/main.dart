@@ -3,7 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:masrofe/models/transaction_model.dart';
-import 'package:masrofe/moudles/home page/home_page_view.dart';
+import 'package:masrofe/splash_screen.dart';
 import 'package:path_provider/path_provider.dart';
 
 void main() async {
@@ -31,7 +31,7 @@ class MasrofeApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      home: HomePageView(),
+      home: SplashScreen(),
     );
   }
 }
